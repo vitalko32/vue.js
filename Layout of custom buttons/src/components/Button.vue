@@ -1,7 +1,7 @@
 <template>
     <div class="sell-buy-btn-wrapper">
         <div class="sell-btn-wrapper btn-wrapper">
-            <button class="sell-btn" @click="testClick('sell')">
+            <button  class="sell-btn"  :class="{active: redA, grey: redG}"  @mouseover="testClick('sell')" @click="testClick('sell')">
                 <strong>SELL</strong>
                 <span>
                     <slot name="sell" />
@@ -9,7 +9,7 @@
             </button>
         </div>
         <div class="buy-btn-wrapper btn-wrapper">
-            <button class="buy-btn" @click="testClick('buy')">
+            <button class="buy-btn"   :class="{active: greenA, grey: greenG}" @mouseover="testClick('buy')" @click="testClick('buy')">
                 <strong>BUY</strong>
                 <span>
                     <slot name="buy" />
@@ -22,6 +22,24 @@
 <script>
 export default {
     name: "ButtonSB",
+     data: {
+    redA: false,
+    redG: false,
+    redN: true,
+    greenA: false,
+    greenN: true,
+    greenG: false
+  },
+  data() {
+      return {
+          redA: this.redA,
+          redN: this.redN,
+          redG: this.redG,
+          greenA: this.greenA,
+        greenG: this.greenG,
+        greenN: this.greenN,
+      }
+  },
     props: {
         down: {
             type: Boolean,
@@ -34,7 +52,20 @@ export default {
     },
     methods: {
         testClick(v) {
+            if(v === "sell") {
+                this.redA = true
+                this.greenG = true
+                this.greenA = false
+                this.redG = false
+            } else {
+                  this.redA = false
+                  this.redG = true
+                this.greenG = false
+                this.greenA = true
+            }
+             // this.isActive= !this.isActive
             console.log("click from " + v);
+           
         }
     },
 }
@@ -88,84 +119,39 @@ button>span {
     font-size: 12px;
     line-height: 14px;
 }
-
-.sell-buy-btn-wrapper {
-    display: flex;
-}
-
 .sell-btn {
-    position: relative;
-    padding: 7.5px 60.5px 7.5px 34px;
-    mask-image: url("../assets/sell.svg");
-    mask-size: contain;
-    mask-position: center;
-    mask-repeat: no-repeat;
-    border: 1px solid;
-    border-image-source: linear-gradient(263.05deg, #9E291D 0%, #EA6E61 42.28%, #C02313 84.57%);
+  
+    width: 150px;
+    height: 70px;
+    z-index: 2;
+    padding-right: 20px;
+    background: url("../assets/btns/1.png") 0 0  / cover no-repeat;
 }
-
-.sell-btn:active {
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(-4px 0px 12px #5B0D05);
+.sell-btn.active{
+    background: url("../assets/btns/1_a.png") 0 0  / cover no-repeat;
 }
-
-.sell-btn::before {
-    content: "";
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    bottom: -50px;
-    left: -50px;
-    display: block;
-    z-index: -1;
-    background: linear-gradient(250deg, #E44232 28.32%, #C22B1C 82.02%);
-    transition: transform 0.5s ease-in-out;
-}
-
-@media (hover: hover) {
-    .sell-btn:hover::before {
-        transform: rotate(180deg);
-    }
-}
-
-.sell-btn-wrapper::after {
-    background: rgba(228, 65, 50, 0.7);
-    filter: blur(12px);
-    border-radius: 50px 0 50px 50px;
+ .sell-btn.grey{
+    background: url("../assets/btns/1_n.png") 0 0  / cover no-repeat;
 }
 
 .buy-btn {
-    padding: 7.5px 34px 7.5px 55px;
-    mask-image: url("../assets/buy.svg");
-    mask-size: contain;
-    mask-position: center;
-    mask-repeat: no-repeat;
-    margin-left: -48px;
-    border: 1px solid;
-    border-image-source: linear-gradient(95.75deg, #1AB670 21%, #57D69C 56.19%, #13AB66 92.12%);
+ 
+    width: 150px;
+    height: 70px;
+    padding-left: 20px;
+    background: url("../assets/btns/2.png") 0 0  / cover no-repeat;
+    position: relative;
+    left: -63px;
+    z-index: 1;
+}
+.buy-btn.active {
+     background: url("../assets/btns/2_a.png") 5px 10px  / 144px 57px no-repeat;
+}
+.buy-btn.grey {
+     background: url("../assets/btns/2_n.png") 0 0 / cover no-repeat;
 }
 
-.buy-btn::before {
-    content: "";
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    bottom: -50px;
-    left: -50px;
-    display: block;
-    z-index: -1;
-    background: linear-gradient(110deg, #39CA85 43.57%, #41A073 98.33%);
-    transition: transform 0.5s ease-in-out;
-}
-
-@media (hover: hover) {
-    .buy-btn:hover::before {
-        transform: rotate(180deg);
-    }
-}
-
-.buy-btn-wrapper::after {
-    background: rgba(37, 212, 130, 0.7);
-    filter: blur(12px);
-    border-radius: 50px 50px 50px 0;
+.sell-buy-btn-wrapper {
+    display: flex;
 }
 </style>
